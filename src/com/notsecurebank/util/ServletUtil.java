@@ -218,6 +218,25 @@ public class ServletUtil {
             return null;
         }
     }
+    
+    static public boolean isAdminUser(HttpServletRequest request) {
+        LOG.info("Is Admin User?");
+
+        try {
+            // Check user is logged in
+            User user = (User) request.getSession().getAttribute(ServletUtil.SESSION_ATTR_USER);
+            if (user == null) {
+                LOG.info("False. Not Logged user");
+                return false;
+            }
+            return DBUtil.isAdmin(user.getUsername());
+            		
+        } catch (Exception e) {
+            LOG.error(e.toString());
+            LOG.info("False.");
+            return false;
+        }
+    }
 
     static public boolean isLoggedin(HttpServletRequest request) {
         LOG.info("Is logged in?");

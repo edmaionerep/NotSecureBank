@@ -84,6 +84,10 @@ public class AdminAPI extends NotSecureBankAPI {
             String response = "{\"loggedIn\" : \"false\"}";
             return Response.status(400).entity(response).build();
         }
+        if (!ServletUtil.isAdminUser(request)) {
+            String response = "{\"adminUser\" : \"false\"}";
+            return Response.status(400).entity(response).build();
+        }
 
         String firstname;
         String lastname;

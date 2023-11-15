@@ -199,6 +199,32 @@ public class DBUtil {
         String query = "SELECT COUNT(*) FROM PEOPLE WHERE ROLE = 'admin' AND USER_ID = ? AND PASSWORD = ?";
         return isValidLogin(query, adminUsername, adminPassword);
     }
+    
+    public static boolean isAdmin(String adminUsername) {
+        String query = "SELECT COUNT(*) FROM PEOPLE WHERE ROLE = 'admin' AND USER_ID = ?";
+        boolean isValidAdmin = false;
+
+        try {
+
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, adminUsername);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                if (resultSet.getInt(1) > 0) {
+                    isValidAdmin = true;
+                }
+            }
+
+        } catch (Exception e) {
+            isValidAdmin = false;
+            LOG.error(e.toString());
+        }
+
+        return isValidAdmin;
+    }
 
     public static boolean isValidApiUser(String username, String password) {
         String query = "SELECT COUNT(*) FROM PEOPLE WHERE USER_ID = ? AND PASSWORD = ?";
