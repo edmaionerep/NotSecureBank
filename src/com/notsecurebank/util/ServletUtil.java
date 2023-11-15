@@ -3,6 +3,7 @@ package com.notsecurebank.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,8 @@ public class ServletUtil {
 
     public static final Pattern XSS_REGEXP = Pattern.compile(".*(?:(<|\\%3c)(\\/|%2f|\\s|\\\u3000)*(script|img|javascript).*(>|%3e)|javascript(:|%3a)|(onblur|onchange|onfocus|onreset|onselect|onsubmit|onabort|onerror|onkeydown|onkeypress|onkeyup|onclick|ondblclick|onmousedown|onmousemove|onmouseout|onmouseover|onmouseup|onload|onunload|ondragdrop|onmove|onresize|style)=).*", Pattern.CASE_INSENSITIVE);
 
+    private static SecureRandom sr = new SecureRandom();
+    
     public static String[] searchArticles(String query, String path) {
         LOG.debug("searchArticles('" + query + "', '" + path + "')");
 
@@ -212,6 +215,7 @@ public class ServletUtil {
             String accountStringList = Account.toBase64List(accounts);
             Cookie accountCookie = new Cookie(ServletUtil.NOT_SECURE_BANK_COOKIE, accountStringList);
             session.setAttribute(ServletUtil.SESSION_ATTR_USER, user);
+            session.setAttribute("csrfToken",Integer.toString(sr.nextInt()));
             return accountCookie;
         } catch (SQLException e) {
             LOG.error(e.toString());

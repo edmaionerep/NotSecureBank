@@ -17,7 +17,7 @@ public class OperationsUtil {
 
     private static final Logger LOG = LogManager.getLogger(OperationsUtil.class);
 
-    public static String doTransfer(HttpServletRequest request, long creditActId, String accountIdString, double amount) {
+    public static String doTransfer(HttpServletRequest request, long creditActId, String accountIdString, double amount, String csrfToken) {
         LOG.debug("doTransfer(HttpServletRequest, " + creditActId + ", '" + accountIdString + "', " + amount + ")");
 
         long debitActId = 0;
@@ -81,6 +81,11 @@ public class OperationsUtil {
             message = "Originating account is invalid";
         } else if (amount < 0) {
             message = "Transfer amount is invalid";
+        }
+        
+        String csrfSession = (String) request.getSession().getAttribute("csrfToken");
+        if (message == null && !csrfSession.equals(csrfToken)) {
+        	message = "BAD/OLD Request: Forged or stolen Token";
         }
 
         // if transfer amount is zero then there is nothing to do

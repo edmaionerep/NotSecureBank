@@ -38,7 +38,8 @@
 		<form id="tForm" name="tForm" method="post" action="doTransfer" onsubmit="return (confirminput(tForm));">
 		
 		<h1>Transfer Funds</h1>
-		
+		<input type="hidden" id="csrfTokenId" name="csrfToken" value="<%= request.getSession().getAttribute("csrfToken") %>">
+		  
 		<table cellSpacing="0" cellPadding="1" width="100%" border="0">
 		  <tr>
 		    <td><strong>From Account:</strong>
@@ -69,7 +70,7 @@
 		    <td><strong> Amount to Transfer:</strong>
 		    </td>
 		    <td><input type="text" id="transferAmount" name="transferAmount"></td>
-		  </tr>
+		   </tr>
 		  <tr>
 		    <td colspan="2" align="center"><input type="submit" name="transfer" value="Transfer Money" ID="transfer"></td>
 		  </tr>

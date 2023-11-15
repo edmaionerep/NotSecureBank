@@ -36,8 +36,10 @@ public class TransferServlet extends HttpServlet {
         String accountIdString = request.getParameter("fromAccount");
         long creditActId = Long.parseLong(request.getParameter("toAccount"));
         double amount = Double.valueOf(request.getParameter("transferAmount"));
-
-        String message = OperationsUtil.doTransfer(request, creditActId, accountIdString, amount);
+        
+        String csrfToken = String.valueOf(request.getParameter("csrfTokenId"));
+        
+        String message = OperationsUtil.doTransfer(request, creditActId, accountIdString, amount, csrfToken);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("transfer.jsp");
         request.setAttribute("message", message);
