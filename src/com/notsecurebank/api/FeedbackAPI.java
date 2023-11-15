@@ -46,6 +46,7 @@ public class FeedbackAPI extends NotSecureBankAPI {
         String comments;
 
         try {
+        	// Sanitize input BEFORE it stored *
             name = (String) myJson.get("name");
             name = StringEscapeUtils.escapeHtml(name);
             email = (String) myJson.get("email");
@@ -59,6 +60,7 @@ public class FeedbackAPI extends NotSecureBankAPI {
             return Response.status(400).entity("{\"Error\": \"Body does not contain all the correct attributes\"}").build();
         }
 
+//      *input already sanitized 
         String feedbackId = OperationsUtil.sendFeedback(name, email, subject, comments);
 
         if (feedbackId != null) {
