@@ -2,6 +2,7 @@
 <%@page import="java.io.InputStream"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="com.notsecurebank.util.ServletUtil"%>
+<%@page import="java.nio.file.Paths;"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -16,6 +17,7 @@
 			content = "default.htm";
 		else
 			content = request.getParameter("content");
+			content = Paths.get(content).normalize().toString();
 			content = "static/"+content;
 		%>
 		
